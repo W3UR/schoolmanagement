@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}लॉगिन{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">लॉगिन करें</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">लॉगिन</button>
+    </form>
+</div>
+{% endblock %}

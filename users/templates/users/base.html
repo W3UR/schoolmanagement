@@ -1,0 +1,12 @@
+<nav class="bg-gray-800 text-white py-4 px-6 flex justify-between">
+    <a href="/" class="text-lg font-bold">🏫 School Management</a>
+
+    <div>
+        {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}" class="mr-4 hover:underline">🚪 लॉगआउट</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="mr-4 hover:underline">🔑 लॉगिन</a>
+            <a href="{% url 'register' %}" class="hover:underline">📝 रजिस्टर</a>
+        {% endif %}
+    </div>
+</nav>

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-gray-800 text-gray-100 min-h-screen">
+    <h2 class="text-2xl font-bold mb-6 text-center">✏️ Edit Fees Master</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Update</button>
+    </form>
+
+    <a href="{% url 'fees_management' %}" class="text-blue-400 mt-4 inline-block">⬅️ Back to Fees Management</a>
+</div>
+{% endblock %}

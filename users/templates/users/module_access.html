@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}मॉड्यूल एक्सेस कंट्रोल{% endblock %}
+
+{% block content %}
+<h2 class="text-xl font-bold mb-4">मॉड्यूल एक्सेस कंट्रोल</h2>
+<form method="POST">
+    {% csrf_token %}
+    <label>यूजर चुनें:</label>
+    <select name="user_id">
+        {% for user in users %}
+            <option value="{{ user.id }}">{{ user.username }} - {{ user.role }}</option>
+        {% endfor %}
+    </select>
+    {{ form.as_p }}
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">सेव करें</button>
+</form>
+{% endblock %}

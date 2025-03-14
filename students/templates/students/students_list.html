@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-gray-800 text-gray-100 min-h-screen">
+    <div class="max-w-6xl mx-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold">Students List</h2>
+         <!-- 🔍 सर्च बॉक्स -->
+    <form method="GET" class="mb-4 flex justify-center">
+        <input type="text" name="search" placeholder="नाम, मोबाइल नंबर या ईमेल से खोजें"
+               class="p-2 border rounded-l w-1/3 bg-gray-100 text-black"
+               value="{{ search_query }}">
+        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-r">
+            🔍 सर्च करें
+        </button>
+    </form>
+            <a href="{% url 'add_student' %}" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded">
+                ➕ Add New Student
+            </a>
+        </div>
+
+        <div class="bg-gray-700 rounded-lg p-4 shadow-lg">
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-600">
+                        <th class="p-3 text-left">Photo</th>
+                        <th class="p-3 text-left">Name</th>
+                        <th class="p-3 text-left">Class</th>
+                        <th class="p-3 text-left">Admission No.</th>
+                        <th class="p-3 text-left">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr class="border-b border-gray-600 hover:bg-gray-650">
+                        <td class="p-3">
+                            {% if student.student_image %}
+                                <img src="{{ student.student_image.url }}" class="w-12 h-12 rounded-full">
+                            {% endif %}
+                        </td>
+                        <td class="p-3">{{ student.first_name }} {{ student.last_name }}</td>
+                        <td class="p-3">{{ student.student_class.name }}</td>
+                        <td class="p-3">{{ student.admission_number }}</td>
+                        <td class="p-3">
+                            <a href="{% url 'edit_student' student.id %}" class="text-blue-400 hover:text-blue-300">✏️ Edit</a>
+                            <a href="{% url 'delete_student' student.id %}" class="text-red-400 hover:text-red-300 ml-3">❌ Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold">Fees Setup</h2>
+
+    <!-- Add Fees Group -->
+    <button onclick="openModal('group-modal')" class="bg-green-500 text-white px-4 py-2 rounded">+ Add Fees Group</button>
+
+    <div id="group-modal" class="hidden fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded shadow-lg">
+            <h3 class="text-lg font-bold">Add Fees Group</h3>
+            <form id="feesGroupForm">
+                {% csrf_token %}
+                <input type="text" id="group-name" class="border border-gray-700 p-2 rounded w-full" placeholder="Class name / Trans Stop">
+                <select id="amount-type" class="border border-gray-700 p-2 rounded w-full">
+                    <option value="One Time">One Time</option>
+                    <option value="Monthly">Monthly</option>
+                </select>
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Add</button>
+                <button type="button" onclick="closeModal('group-modal')" class="bg-red-500 text-white px-4 py-2 rounded">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Table -->
+    <table class="w-full mt-4 border">
+        <thead>
+            <tr class="bg-gray-200">
+                <th>Class / Trans Stoppage</th>
+                <th>Amount Type</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="fees-table-body">
+            {% for group in fees_groups %}
+            <tr id="row-{{ group.id }}">
+                <td>{{ group.name }}</td>
+                <td>{{ group.amount_type }}</td>
+                <td>
+                    <button onclick="confirmDelete({{ group.id }})" class="text-red-500">🗑 Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    document.getElementById('feesGroupForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        let name = document.getElementById('group-name').value;
+        let amount_type = document.getElementById('amount-type').value;
+
+        fetch("{% url 'add_fees_group' %}", {
+            method: "POST",
+            body: new URLSearchParams({ "name": name, "amount_type": amount_type, "csrfmiddlewaretoken": "{{ csrf_token }}" }),
+            headers: { "Content-Type": "application/x-www-form-urlencoded" }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.id) {
+                document.getElementById("fees-table-body").innerHTML += `
+                    <tr id="row-${data.id}">
+                        <td>${data.name}</td>
+                        <td>${data.amount_type}</td>
+                        <td><button onclick="confirmDelete(${data.id})" class="text-red-500">🗑 Delete</button></td>
+                    </tr>`;
+                closeModal('group-modal');
+            }
+        });
+    });
+
+    function confirmDelete(id) {
+        if (confirm("Are you sure you want to delete?")) {
+            fetch(`/delete-fees-group/${id}/`, { method: "POST" })
+            .then(() => document.getElementById(`row-${id}`).remove());
+        }
+    }
+</script>
+
+{% endblock %}

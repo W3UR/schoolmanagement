@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white shadow rounded-lg">
+    <h2 class="text-2xl font-bold text-gray-700">क्या आप वाकई इसे डिलीट करना चाहते हैं?</h2>
+    <p>{{ object }}</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">हाँ, डिलीट करें</button>
+        <a href="{% url 'subjects_management' %}" class="bg-gray-500 text-white px-4 py-2 rounded">नहीं</a>
+    </form>
+</div>
+{% endblock %}

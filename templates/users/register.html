@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}रजिस्ट्रेशन{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-xl font-bold mb-4">रजिस्टर करें</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">रजिस्टर करें</button>
+    </form>
+</div>
+{% endblock %}

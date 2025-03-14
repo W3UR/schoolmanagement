@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>👨‍🏫 टीचर मैनेजमेंट</h2>
+
+<a href="{% url 'add_teacher' %}" class="btn btn-primary">+ नया टीचर जोड़ें</a>
+
+<table border="1">
+    <tr>
+        <th>नाम</th>
+        <th>मोबाइल</th>
+        <th>ईमेल</th>
+        <th>योग्यता</th>
+        <th>ज्वाइनिंग डेट</th>
+        <th>एक्शन</th>
+    </tr>
+    {% for teacher in teachers %}
+    <tr>
+        <td>{{ teacher.name }}</td>
+        <td>{{ teacher.mobile }}</td>
+        <td>{{ teacher.email }}</td>
+        <td>{{ teacher.qualification }}</td>
+        <td>{{ teacher.joining_date }}</td>
+        <td>
+            <a href="{% url 'edit_teacher' teacher.id %}" class="btn btn-warning">✏️ एडिट</a>
+            <a href="{% url 'delete_teacher' teacher.id %}" class="btn btn-danger" onclick="return confirm('क्या आप वाकई इस टीचर को डिलीट करना चाहते हैं?')">🗑️ डिलीट</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

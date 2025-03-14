@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-gray-800 text-gray-100 min-h-screen">
+    <h2 class="text-2xl font-bold mb-6 text-center">🚍 Transport Management</h2>
+
+    <!-- ✅ Success Messages -->
+    {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+                <div class="bg-green-500 text-white p-2 rounded">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- 🛣️ Route Management -->
+        <div class="border p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">🛣️ Add Route</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ route_form.as_p }}
+                <button type="submit" name="route_submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add Route</button>
+            </form>
+            <!-- ✅ Route Table -->
+            <table class="w-full mt-4 border">
+                <tr class="bg-gray-700"><th>Route</th><th>Actions</th></tr>
+                {% for route in routes %}
+                <tr>
+                    <td>{{ route.name }}</td>
+                    <td>
+                        <a href="?edit_route_id={{ route.id }}" class="text-blue-500">✏️ Edit</a>
+                        <a href="{% url 'delete_route' route.id %}" onclick="return confirm('Are you sure?');" class="text-red-500 ml-2">❌ Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- 🚏 Stoppage Management -->
+        <div class="border p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">🚏 Add Stoppage</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ stoppage_form.as_p }}
+                <button type="submit" name="stoppage_submit" class="bg-blue-500 text-white px-4 py-2 rounded">Add Stoppage</button>
+            </form>
+            <!-- ✅ Stoppage Table -->
+            <table class="w-full mt-4 border">
+                <tr class="bg-gray-700"><th>route</th><th>Stoppage</th><th>Actions</th></tr>
+                {% for stoppage in stoppages %}
+                <tr>
+                    <td>{{ stoppage.route.name }} </td>
+                    <td>{{ stoppage.name }}</td>
+                    <td>
+                        <a href="?edit_stoppage_id={{ stoppage.id }}" class="text-blue-500">✏️ Edit</a>
+                        <a href="{% url 'delete_stoppage' stoppage.id %}" onclick="return confirm('Are you sure?');" class="text-red-500 ml-2">❌ Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- 🚌 Transport Assignment -->
+        <div class="border p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">🚌 Assign Transport</h3>
+            <form method="POST">
+                {% csrf_token %}
+                <input type="text" id="studentSearch" placeholder="Search Student" class="p-2 border rounded w-full bg-gray-100 text-black">
+                {{ assignment_form.as_p }}
+                <button type="submit" name="assignment_submit" class="bg-blue-500 text-white px-4 py-2 rounded">Assign Transport</button>
+            </form>
+            <!-- ✅ Transport Assignment Table -->
+            <table class="w-full mt-4 border">
+                <tr class="bg-gray-700"><th>Student</th><th>Route</th><th>Stoppage</th><th>Actions</th></tr>
+                {% for assignment in assignments %}
+                <tr>
+                    <td>{{ assignment.student.first_name }} {{ assignment.student.last_name }}</td>
+                    <td>{{ assignment.route.name }}</td>
+                    <td>{{ assignment.stoppage.name }}</td>
+                    <td>
+                        <a href="?edit_assignment_id={{ assignment.id }}" class="text-blue-500">✏️ Edit</a>
+                        <a href="{% url 'delete_assignment' assignment.id %}" onclick="return confirm('Are you sure?');" class="text-red-500 ml-2">❌ Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    document.getElementById('studentSearch').addEventListener('keyup', function() {
+        let filter = this.value.toLowerCase();
+        let options = document.querySelectorAll(".student-search option");
+        options.forEach(option => {
+            let text = option.textContent.toLowerCase();
+            option.style.display = text.includes(filter) ? "block" : "none";
+        });
+    });
+</script>
+
+{% endblock %}

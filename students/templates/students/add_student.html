@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-gray-800 text-gray-100 min-h-screen">
+    <div class="max-w-4xl mx-auto bg-gray-700 p-6 rounded-lg shadow-lg">
+        <h2 class="text-2xl font-bold mb-6 text-center">{% if form.instance.id %}Edit Student{% else %}Add Student{% endif %}</h2>
+        <form method="POST" enctype="multipart/form-data" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Left Column -->
+                <div class="space-y-4">
+                    <div class="form-group">
+                        <label class="block mb-2">Admission Number</label>
+                        {{ form.admission_number }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">First Name</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Last Name</label>
+                        {{ form.last_name }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Father's Name</label>
+                        {{ form.father_name }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Mother's Name</label>
+                        {{ form.mother_name }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Date of Birth</label>
+                        {{ form.date_of_birth }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Date of Admission</label>
+                        {{ form.date_of_admission }}
+                    </div>
+                </div>
+
+                <!-- Right Column -->
+                <div class="space-y-4">
+                    <div class="form-group">
+                        <label class="block mb-2">Class</label>
+                        {{ form.student_class }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Gender</label>
+                        {{ form.gender }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Religion</label>
+                        {{ form.religion }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Caste Category</label>
+                        {{ form.caste_category }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Mobile Number</label>
+                        {{ form.mobile_number }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div class="form-group">
+                        <label class="block mb-2">Blood Group</label>
+                        {{ form.blood_group }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Full Width Fields -->
+            <div class="form-group">
+                <label class="block mb-2">Address</label>
+                {{ form.address }}
+            </div>
+
+            <!-- Image and Document Upload -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="form-group">
+                    <label class="block mb-2">Student Photo</label>
+                    <input type="file" id="student_photo" name="student_image" class="border rounded p-2 w-full bg-gray-100">
+                    <img id="photo_preview" src="{% if form.instance.student_image %}{{ form.instance.student_image.url }}{% else %}#{% endif %}" class="mt-2 w-20 h-20 rounded-full border">
+                </div>
+                <div class="form-group">
+                    <label class="block mb-2">Aadhar Card</label>
+                    {{ form.aadhar_card }}
+                </div>
+                <div class="form-group">
+                    <label class="block mb-2">Transfer Certificate</label>
+                    {{ form.transfer_certificate }}
+                </div>
+            </div>
+
+            <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded w-full">
+                Save Student
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- JavaScript for Image Preview -->
+<script>
+    document.getElementById('student_photo').addEventListener('change', function(event) {
+        var reader = new FileReader();
+        reader.onload = function(){
+            var output = document.getElementById('photo_preview');
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    });
+</script>
+
+{% endblock %}

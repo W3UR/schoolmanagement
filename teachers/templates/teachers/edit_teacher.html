@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white shadow rounded-lg">
+    <h2 class="text-2xl font-bold text-gray-700">टीचर एडिट करें</h2>
+    
+    <form method="POST" enctype="multipart/form-data" class="mt-4">
+        {% csrf_token %}
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-sm font-medium">नाम:</label>
+                {{ form.name }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium">मोबाइल नंबर:</label>
+                {{ form.mobile }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium">ईमेल:</label>
+                {{ form.email }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium">योग्यता:</label>
+                {{ form.qualification }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium">ज्वाइनिंग डेट:</label>
+                {{ form.joining_date }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium">फोटो अपलोड:</label>
+                {{ form.photo }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium">रिज्यूमे अपलोड:</label>
+                {{ form.resume }}
+            </div>
+            <div>
+                <label class="block text-sm font-medium">ज्वाइनिंग लेटर:</label>
+                {{ form.joining_letter }}
+            </div>
+        </div>
+        <button type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded">अपडेट करें</button>
+    </form>
+</div>
+{% endblock %}

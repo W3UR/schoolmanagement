@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white shadow rounded-lg">
+    <h2 class="text-2xl font-bold">स्कूल प्रोफाइल</h2>
+    <img src="{{ profile.logo.url }}" alt="स्कूल लोगो" class="h-24 w-24 mt-2">
+    <p><strong>स्कूल का नाम:</strong> {{ profile.school_name }}</p>
+    <p><strong>प्रधानाचार्य:</strong> {{ profile.principal_name }}</p>
+    <p><strong>पता:</strong> {{ profile.address }}</p>
+    <p><strong>ईमेल:</strong> {{ profile.email }}</p>
+    <p><strong>मोबाइल:</strong> {{ profile.mobile }}</p>
+    <p><strong>रजिस्ट्रेशन नंबर:</strong> {{ profile.registration_number }}</p>
+    <p><strong>एकेडमिक सेशन:</strong> {{ profile.start_date|date:"d/m/Y" }} से {{ profile.end_date|date:"d/m/Y" }}</p>
+    <a href="{% url 'school_profile_edit' %}" class="bg-blue-500 text-white px-4 py-2 rounded mt-4">एडिट करें</a>
+</div>
+{% endblock %}

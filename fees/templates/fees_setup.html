@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mx-auto p-4">
+    <h2 class="text-2xl font-bold">Fees Setup</h2>
+
+    <!-- Success Messages -->
+    {% if messages %}
+    <div class="p-3 bg-green-100 text-green-700">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Add Fees Group -->
+<button onclick="openModal('group-modal')" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-lg transition-all duration-300">+ Add Fees Group</button>
+
+    <div id="group-modal" class="hidden fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50">
+        <div class="bg-white p-6 rounded shadow-lg">
+            <h3 class="text-lg font-bold">Add Fees Group</h3>
+            <form method="POST" action="{% url 'add_fees_group' %}">
+                {% csrf_token %}
+                {{ group_form.as_p }}
+                <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded">Add</button>
+                <button type="button" onclick="closeModal('group-modal')" class="bg-red-500 text-white px-4 py-2 rounded">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Fees Type -->
+        <button onclick="openModal('type-modal')" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-lg transition-all duration-300">+ Add Fees Type</button>
+
+    <div id="type-modal" class="hidden fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50">
+    <div class="bg-white p-6 rounded shadow-lg">
+        <h3 class="text-lg font-bold">Add Fees Type</h3>
+        <form method="POST" action="{% url 'add_fees_type' %}">
+            {% csrf_token %}
+
+            <label class="block text-gray-700">Fee Group:</label>
+            <select name="fee_group" id="fee-group-dropdown" class="w-full border px-3 py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500">
+                <option value="">Select Fee Group</option>
+                {% for group in fees_groups %}
+                    <option value="{{ group.id }}">{{ group.name }}</option>
+                {% endfor %}
+            </select>
+
+            <label class="block text-gray-700">Amount Type:</label>
+            <select name="amount_type" id="amount-type-dropdown" class="w-full border px-3 py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500">
+                <option value="">Select Amount Type</option>
+            </select>
+
+            <label class="block text-gray-700">Fee Type:</label>
+            <input type="text" name="name" placeholder="Admis. Fee / Apr25" class="w-full border px-3 py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500">
+
+            <label class="block text-gray-700">Amount:</label>
+            <input type="number" name="amount" class="w-full border px-3 py-2 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500">
+
+            <div class="flex justify-end space-x-2">
+                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg shadow-lg transition-all">Add</button>
+                <button type="button" onclick="closeModal('type-modal')" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg shadow-lg transition-all">Cancel</button>
+            </div>
+            </form>
+            </div>
+    </div>
+
+    <!-- Table -->
+    <table class="w-full mt-4 border">
+        <thead>
+            <tr class="bg-gray-200">
+                <th>Class / Trans Stoppage</th>
+                <th>Fee Type</th>
+                <th>Amount Type</th>
+                <th>Amount</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for fee in fees_types %}
+            <tr class="border">
+                <td>{{ fee.fee_group }}</td>
+                <td>{{ fee.name }}</td>
+                <td>{{ fee.fee_group.amount_type }}</td>
+                <td>{{ fee.amount }}</td>
+                <td>
+                    <a href="{% url 'delete_fees_type' fee.id %}" class="text-red-500">🗑 Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+    function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+    document.getElementById("fee-group-dropdown").addEventListener("change", function() {
+        var selectedGroupId = this.value;
+        var amountTypeDropdown = document.getElementById("amount-type-dropdown");
+
+        var amountTypeData = {{ amount_type_dict|safe }};
+        amountTypeDropdown.innerHTML = '<option value="">Select Amount Type</option>';
+
+        if (selectedGroupId && amountTypeData[selectedGroupId]) {
+            var option = document.createElement("option");
+            option.value = amountTypeData[selectedGroupId];
+            option.textContent = amountTypeData[selectedGroupId];
+            amountTypeDropdown.appendChild(option);
+        }
+    });
+</script>
+
+{% endblock %}

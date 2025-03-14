@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}School Management{% endblock %}</title>
+
+    <!-- TailwindCSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <!-- Custom CSS -->
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-500 p-4 text-white">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="text-lg font-semibold">🏫 School Management</a>
+            <div class="flex space-x-4">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}" class="px-3 hover:text-gray-200">🚪 लॉगआउट</a>
+                {% else %}
+                    <a href="{% url 'login' %}" class="px-3 hover:text-gray-200">🔑 लॉगिन</a>
+                    <a href="{% url 'register' %}" class="px-3 hover:text-gray-200">📝 रजिस्टर</a>
+                {% endif %}
+                <a href="{% url 'school_profile_view' %}" class="px-3 hover:text-gray-200">🏫 स्कूल प्रोफाइल</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto p-6">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Optional: Add your scripts here if needed -->
+</body>
+</html>

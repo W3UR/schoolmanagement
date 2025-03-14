@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}यूजर मैनेजमेंट{% endblock %}
+
+{% block content %}
+<h2 class="text-xl font-bold mb-4">सभी यूजर्स</h2>
+
+{% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li class="text-green-500">{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<table class="min-w-full bg-white border">
+    <thead>
+        <tr class="bg-gray-200">
+            <th class="py-2 px-4 border">यूजरनेम</th>
+            <th class="py-2 px-4 border">ईमेल</th>
+            <th class="py-2 px-4 border">रोल</th>
+            <th class="py-2 px-4 border">एक्शन</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users %}
+        <tr>
+            <td class="py-2 px-4 border">{{ user.username }}</td>
+            <td class="py-2 px-4 border">{{ user.email }}</td>
+            <td class="py-2 px-4 border">{{ user.role }}</td>
+            <td class="py-2 px-4 border">
+                <a href="{% url 'update_user_role' user.id %}" class="bg-blue-500 text-white px-2 py-1 rounded">रोल बदलें</a>
+                <a href="{% url 'delete_user' user.id %}" class="bg-red-500 text-white px-2 py-1 rounded">🗑 डिलीट</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

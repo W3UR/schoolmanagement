@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mx-auto p-6 bg-white shadow rounded-lg">
+    <h2 class="text-2xl font-bold text-gray-700">सब्जेक्ट मैनेजमेंट</h2>
+
+    <div class="grid grid-cols-2 gap-6 mt-6">
+
+        <!-- क्लास मैनेजमेंट -->
+        <div class="border p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">📚 क्लास मैनेजमेंट</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ class_form.as_p }}
+                <button type="submit" name="class_submit" class="bg-blue-500 text-white px-4 py-2 rounded">जोड़ें</button>
+            </form>
+            <table class="w-full mt-4 border">
+                <tr class="bg-gray-200"><th>क्लास</th><th>रूम नंबर</th><th>कार्य</th></tr>
+                {% for c in classes %}
+                <tr>
+                    <td>{{ c.name }}</td>
+                    <td>{{ c.room_number }}</td>
+                    <td>
+                        <a href="{% url 'edit_class' c.id %}" class="text-blue-500">✏️</a>
+                        <a href="{% url 'delete_class' c.id %}" class="text-red-500 ml-2">❌</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- सेक्शन मैनेजमेंट -->
+        <div class="border p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">📌 सेक्शन मैनेजमेंट</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ section_form.as_p }}
+                <button type="submit" name="section_submit" class="bg-blue-500 text-white px-4 py-2 rounded">जोड़ें</button>
+            </form>
+            <table class="w-full mt-4 border">
+                <tr class="bg-gray-200"><th>सेक्शन</th><th>कार्य</th></tr>
+                {% for s in sections %}
+                <tr>
+                    <td>{{ s.name }}</td>
+                    <td>
+                        <a href="{% url 'edit_section' s.id %}" class="text-blue-500">✏️</a>
+                        <a href="{% url 'delete_section' s.id %}" class="text-red-500 ml-2">❌</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- सब्जेक्ट मैनेजमेंट -->
+        <div class="border p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">📖 सब्जेक्ट मैनेजमेंट</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ subject_form.as_p }}
+                <button type="submit" name="subject_submit" class="bg-blue-500 text-white px-4 py-2 rounded">जोड़ें</button>
+            </form>
+            <table class="w-full mt-4 border">
+                <tr class="bg-gray-200"><th>सब्जेक्ट</th><th>कार्य</th></tr>
+                {% for s in subjects %}
+                <tr>
+                    <td>{{ s.name }}</td>
+                    <td>
+                        <a href="{% url 'edit_subject' s.id %}" class="text-blue-500">✏️</a>
+                        <a href="{% url 'delete_subject' s.id %}" class="text-red-500 ml-2">❌</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- सब्जेक्ट असाइन -->
+        <div class="border p-4 rounded shadow">
+            <h3 class="text-lg font-semibold">👨‍🏫 सब्जेक्ट असाइन</h3>
+            <form method="POST">
+                {% csrf_token %}
+                {{ subject_assign_form.as_p }}
+                <button type="submit" name="subject_assign_submit" class="bg-blue-500 text-white px-4 py-2 rounded">जोड़ें</button>
+            </form>
+            <table class="w-full mt-4 border">
+                <tr class="bg-gray-200"><th>क्लास</th><th>सब्जेक्ट</th><th>टीचर</th><th>कार्य</th></tr>
+                {% for sa in subject_assignments %}
+                <tr>
+                    <td>{{ sa.class_name }}</td>
+                    <td>{{ sa.subject }}</td>
+                    <td>{{ sa.teacher }}</td>
+                    <td>
+                        <a href="{% url 'edit_subject_assign' sa.id %}" class="text-blue-500">✏️</a>
+                        <a href="{% url 'delete_subject_assign' sa.id %}" class="text-red-500 ml-2">❌</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
